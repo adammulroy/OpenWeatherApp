@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
-
-namespace OpenWeatherApp.Api
+﻿namespace OpenWeatherApp.Api
 {
     public interface IWeatherApiService
     {
-        
     }
 }

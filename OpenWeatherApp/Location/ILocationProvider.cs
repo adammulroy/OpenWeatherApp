@@ -4,6 +4,6 @@ namespace OpenWeatherApp.Location
 {
     public interface ILocationProvider
     {
-        IEnumerable<Place> CachedLocations { get;  }
+        IEnumerable<Place> CachedLocations { get; }
     }
 }
