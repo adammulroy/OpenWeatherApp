@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Configurations>Release;Debug</Configurations>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="CefSharp.Wpf.HwndHost" Version="106.0.260" />
+        <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+        <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\OpenWeatherApp\OpenWeatherApp.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\.run\Publish OpenWeatherMap.Wpf.LiveMap to folder.run.xml">
+            <Link>Publish OpenWeatherMap.Wpf.LiveMap to folder.run.xml</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </None>
+    </ItemGroup>
+
+</Project>
