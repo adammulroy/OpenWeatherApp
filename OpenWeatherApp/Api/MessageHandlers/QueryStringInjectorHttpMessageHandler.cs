@@ -9,8 +9,8 @@ namespace OpenWeatherApp.Api.MessageHandlers
 {
     public class QueryStringInjectorHttpMessageHandler : DelegatingHandler
     {
-        public QueryStringInjectorHttpMessageHandler(Dictionary<string, string> parameters = null,
-            HttpMessageHandler innerHandler = null)
+        public QueryStringInjectorHttpMessageHandler(Dictionary<string, string>? parameters = null,
+            HttpMessageHandler? innerHandler = null)
             : base(innerHandler ?? new HttpClientHandler())
         {
             Parameters = parameters ?? new Dictionary<string, string>();

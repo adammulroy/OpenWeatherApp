@@ -4,16 +4,20 @@ using System.Text.Json.Serialization;
 
 namespace OpenWeatherApp.Api.Converters
 {
+    
+    
     //REF - https://stackoverflow.com/questions/66310421/deserialise-json-timestamp-with-system-text-json
     public class UnixToNullableUtcDateTimeConverter : JsonConverter<DateTime?>
     {
+        public static DateTimeOffset UnixEpoch => DateTimeOffset.FromUnixTimeMilliseconds(0);
+        
         private static readonly long _unixMinSeconds =
             DateTimeOffset.MinValue.ToUnixTimeSeconds() -
-            DateTimeOffset.UnixEpoch.ToUnixTimeSeconds(); // -62_135_596_800
+            UnixEpoch.ToUnixTimeMilliseconds(); // -62_135_596_800
 
         private static readonly long _unixMaxSeconds =
             DateTimeOffset.MaxValue.ToUnixTimeSeconds() -
-            DateTimeOffset.UnixEpoch.ToUnixTimeSeconds(); // 253_402_300_799
+            UnixEpoch.ToUnixTimeMilliseconds(); // 253_402_300_799
 
         public override bool HandleNull => true;
         public bool? IsFormatInSeconds { get; set; } = null;

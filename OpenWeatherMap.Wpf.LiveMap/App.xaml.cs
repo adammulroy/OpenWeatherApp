@@ -11,6 +11,7 @@ using OpenWeatherApp.Api;
 using OpenWeatherApp.Api.OpenWeather;
 using OpenWeatherApp.Location;
 using OpenWeatherApp.Weather;
+using OpenWeatherMap.Wpf.LiveMap.ViewModels;
 
 namespace OpenWeatherMap.Wpf.LiveMap
 {
@@ -38,6 +39,7 @@ namespace OpenWeatherMap.Wpf.LiveMap
             services.AddScoped<ILocationProvider, LocationProvider>();
             services.AddSingleton<LocationViewModel>();
             services.AddSingleton<WeatherViewModel>();
+            services.AddSingleton<AppViewModel>();
             services.AddSingleton<MainWindow>();
         }
 

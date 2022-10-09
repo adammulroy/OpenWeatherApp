@@ -8,10 +8,9 @@ namespace OpenWeatherApp.Api.OpenWeather.Endpoints
 {
     public interface IOpenWeatherGeolocationApi
     {
-        private const string UnitedStatesCode = "US";
 
         //http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
-        [Get("/zip?zip={zipCode}," + UnitedStatesCode)]
+        [Get("/zip?zip={zipCode}," + "US")]
         Task<ApiResponse<ZipCodeLocation>> GetLocationByZipCode(string zipCode,
             CancellationToken cancellationToken = default);
 
@@ -21,7 +20,7 @@ namespace OpenWeatherApp.Api.OpenWeather.Endpoints
             CancellationToken cancellationToken = default);
 
         //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-        [Get("/direct?q={cityName}," + UnitedStatesCode)]
+        [Get("/direct?q={cityName}," + "US")]
         Task<ApiResponse<IEnumerable<CityNameLocation>>> GetLocationByCityName(string cityName,
             CancellationToken cancellationToken = default);
     }

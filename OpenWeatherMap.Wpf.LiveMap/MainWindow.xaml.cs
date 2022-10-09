@@ -9,16 +9,14 @@ namespace OpenWeatherMap.Wpf.LiveMap
         public WeatherViewModel WeatherViewModel { get; }
         public LocationViewModel LocationViewModel { get; }
         public BrowserViewModel BrowserViewModel { get; }
-        public MainWindow(WeatherViewModel weatherViewModel, LocationViewModel locationViewModel)
+        public MainWindow(WeatherViewModel weatherViewModel, LocationViewModel locationViewModel, ILocationProvider locationProvider)
         {
             InitializeComponent();
 
             WeatherViewModel = weatherViewModel;
             LocationViewModel = locationViewModel;
-            BrowserViewModel = new BrowserViewModel(Browser);
+            BrowserViewModel = new BrowserViewModel(Browser, locationProvider);
             BrowserViewModel.Init();
-            
-            
         }
     }
 }
