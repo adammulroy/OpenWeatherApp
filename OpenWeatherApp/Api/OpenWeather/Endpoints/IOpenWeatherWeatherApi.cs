@@ -4,7 +4,7 @@ using Refit;
 
 namespace OpenWeatherApp.Api.OpenWeather.Endpoints
 {
-    public interface IOpenWeatherMapApi
+    public interface IOpenWeatherWeatherApi
     {
         [Get("/weather")]
         Task<ApiResponse<string>> GetCurrentWeatherAsync([AliasAs("q")] string lat, string lon, string appId,

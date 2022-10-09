@@ -1,6 +1,6 @@
 ﻿namespace OpenWeatherApp.Weather
 {
-    public class WeatherProvider
+    public class WeatherProvider : IWeatherProvider
     {
     }
 }

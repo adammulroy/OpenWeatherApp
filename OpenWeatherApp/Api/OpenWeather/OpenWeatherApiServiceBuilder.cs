@@ -6,12 +6,12 @@ using Refit;
 
 namespace OpenWeatherApp.Api.OpenWeather
 {
-    public static class OpenWeatherMapServiceBuilder
+    public static class OpenWeatherApiServiceBuilder
     {
         public static IServiceCollection AddOpenWeatherMap(this IServiceCollection services, AppSettings settings)
         {
             services.AddRefitClient<IOpenWeatherGeolocationApi>()
-                .ConfigureHttpClient(client => { client.BaseAddress = new Uri(settings.OpenWeatherMapApiTileUrl); })
+                .ConfigureHttpClient(client => { client.BaseAddress = new Uri(settings.OpenWeatherMapGeoCodeApiUrl); })
                 .ConfigurePrimaryHttpMessageHandler(_ =>
                 {
                     var handler = new QueryStringInjectorHttpMessageHandler();
@@ -20,8 +20,8 @@ namespace OpenWeatherApp.Api.OpenWeather
                     return handler;
                 });
 
-            services.AddRefitClient<IOpenWeatherMapApi>()
-                .ConfigureHttpClient(client => { client.BaseAddress = new Uri(settings.OpenWeatherMapApiUrl); })
+            services.AddRefitClient<IOpenWeatherWeatherApi>()
+                .ConfigureHttpClient(client => { client.BaseAddress = new Uri(settings.OpenWeatherMapWeatherApiUrl); })
                 .ConfigureHttpMessageHandlerBuilder(_ =>
                 {
                     var handler = new QueryStringInjectorHttpMessageHandler();

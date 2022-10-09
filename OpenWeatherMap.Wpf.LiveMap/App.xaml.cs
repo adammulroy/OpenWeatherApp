@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using OpenWeatherApp;
 using OpenWeatherApp.Api;
 using OpenWeatherApp.Api.OpenWeather;
+using OpenWeatherApp.Location;
+using OpenWeatherApp.Weather;
 
 namespace OpenWeatherMap.Wpf.LiveMap
 {
@@ -30,7 +32,12 @@ namespace OpenWeatherMap.Wpf.LiveMap
             var appSettings = appSection.Get<AppSettings>();
 
             services.AddOpenWeatherMap(appSettings);
-            services.AddScoped<IWeatherApiService, OpenWeatherApiService>();
+            services.AddScoped<IWeatherApiService, OpenWeatherApiWeatherService>();
+            services.AddScoped<IWeatherProvider, WeatherProvider>();
+            services.AddScoped<ILocationApiService, OpenWeatherLocationApiService>();
+            services.AddScoped<ILocationProvider, LocationProvider>();
+            services.AddSingleton<LocationViewModel>();
+            services.AddSingleton<WeatherViewModel>();
             services.AddSingleton<MainWindow>();
         }
 
@@ -49,6 +56,10 @@ namespace OpenWeatherMap.Wpf.LiveMap
             if (!Cef.IsInitialized) Cef.Initialize(settings, true, browserProcessHandler: null);
 
             await _host.StartAsync();
+
+            var window = _host.Services.GetRequiredService<MainWindow>();
+            window.Show();
+            
             base.OnStartup(e);
         }
 

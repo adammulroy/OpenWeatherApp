@@ -2,8 +2,8 @@
 {
     public class AppSettings
     {
-        public string OpenWeatherMapApiTileUrl { get; set; }
-        public string OpenWeatherMapApiUrl { get; set; }
+        public string OpenWeatherMapGeoCodeApiUrl { get; set; }
+        public string OpenWeatherMapWeatherApiUrl { get; set; }
         public string OpenWeatherMapApiKey { get; set; }
     }
 }

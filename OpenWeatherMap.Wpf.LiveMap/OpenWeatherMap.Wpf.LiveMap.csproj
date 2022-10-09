@@ -9,13 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CefSharp.Wpf.HwndHost" Version="106.0.260"/>
-        <PackageReference Include="MahApps.Metro" Version="2.4.9"/>
-        <PackageReference Include="MaterialDesignThemes" Version="4.6.1"/>
+        <PackageReference Include="CefSharp.Wpf.HwndHost" Version="106.0.260" />
+        <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+        <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\OpenWeatherApp\OpenWeatherApp.csproj"/>
+        <ProjectReference Include="..\OpenWeatherApp\OpenWeatherApp.csproj" />
     </ItemGroup>
 
     <ItemGroup>

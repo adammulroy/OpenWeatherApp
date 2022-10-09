@@ -15,5 +15,14 @@
         <Border BorderThickness="0">
             <hwndHost:ChromiumWebBrowser x:Name="Browser" />
         </Border>
+        <StackPanel Grid.Column="1">
+           <GroupBox Header="Location" Margin="0, 20">
+               <StackPanel>
+                   <TextBox x:Name="SearchTextBox" 
+                            mah:TextBoxHelper.Watermark="Search for location"/>
+                   <ComboBox x:Name="LocationsComboBox"/>
+               </StackPanel>
+           </GroupBox>
+        </StackPanel>
     </Grid>
 </mah:MetroWindow>

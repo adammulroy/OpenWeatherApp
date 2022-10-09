@@ -26,6 +26,7 @@ namespace OpenWeatherApp.Api.Converters
                 if (IsFormatInSeconds == true ||
                     (IsFormatInSeconds == null && time > _unixMinSeconds && time < _unixMaxSeconds))
                     return DateTimeOffset.FromUnixTimeSeconds(time).UtcDateTime;
+                
                 return DateTimeOffset.FromUnixTimeMilliseconds(time).UtcDateTime;
             }
 

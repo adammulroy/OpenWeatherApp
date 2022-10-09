@@ -22,7 +22,8 @@ namespace OpenWeatherApp.Api.MessageHandlers
             CancellationToken cancellationToken)
         {
             var queryStringParameters = HttpUtility.ParseQueryString(request.RequestUri.Query);
-            foreach (var parameter in Parameters) queryStringParameters.Add(parameter.Key, parameter.Value);
+            foreach (var parameter in Parameters) 
+                queryStringParameters.Add(parameter.Key, parameter.Value);
 
             var uriBuilder = new UriBuilder(request.RequestUri)
             {
