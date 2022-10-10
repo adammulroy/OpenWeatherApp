@@ -10,8 +10,8 @@
 
 ### .NET 6
 *  This project is built on .NET 6
-	* The .NET 6 SDKs can be found [here](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
-		* The .NET 6 SDK includes the runtime but I currently can't the self-contained publishing to work with .NET 6 WPF so any deployments will need the runtime. 
+   * The .NET 6 SDKs can be found [here](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+   * The .NET 6 SDK includes the runtime but I currently can't get the self-contained publishing to work with .NET 6 WPF so any deployments will need the runtime.
 
 ## Overview
 ### CefSharp
