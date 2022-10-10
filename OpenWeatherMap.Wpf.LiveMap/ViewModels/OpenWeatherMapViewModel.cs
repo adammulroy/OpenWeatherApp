@@ -4,48 +4,47 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using OpenWeatherApp.Api;
 using OpenWeatherApp.Location;
-using OpenWeatherApp.Weather;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using static System.Collections.Specialized.NotifyCollectionChangedAction;
 
 namespace OpenWeatherMap.Wpf.LiveMap.ViewModels;
 
-public class AppViewModel : ReactiveObject
+public class AppViewModel : ReactiveObject, IActivatableViewModel
 {
     private readonly ILocationApiService _apiService;
     private readonly ILocationProvider _locationProvider;
-    private readonly IWeatherApiService _weatherApiService;
-    private readonly IWeatherProvider _weatherProvider;
 
-    public AppViewModel(ILocationProvider locationProvider, ILocationApiService apiService,
-        IWeatherProvider weatherProvider, IWeatherApiService weatherApiService)
+    public AppViewModel(ILocationProvider locationProvider, ILocationApiService apiService)
     {
         _locationProvider = locationProvider;
         _apiService = apiService;
-        _weatherProvider = weatherProvider;
-        _weatherApiService = weatherApiService;
         SearchResults = new ObservableCollection<Place>();
         Activator = new ViewModelActivator();
         SearchType = LocationSearchType.CityName;
+        
         WaterMarkText = "Search for location by City Name..";
 
-        SetupSelectedLocation();
-        SetupCommands();
-        SetupTextSearch();
+        var disp = new CompositeDisposable();
+        
+        SetupSelectedLocation(disp);
+        SetupCommands(disp);
+        SetupTextSearch(disp);
+
     }
 
     public ObservableCollection<Place> SearchResults { get; }
-    [Reactive] public string LocationSearchText { get; set; }
     [Reactive] public Place SelectedPlace { get; set; }
     [Reactive] public bool HasSearchResults { get; set; }
     [Reactive] public string WaterMarkText { get; set; }
+    [Reactive] public string LocationSearchText { get; set; }
     [Reactive] public string SelectedLocationName { get; set; }
     [Reactive] public string SelectedLocationLatitude { get; set; }
     [Reactive] public string SelectedLocationLongitude { get; set; }
@@ -57,7 +56,7 @@ public class AppViewModel : ReactiveObject
 
     public ViewModelActivator Activator { get; }
 
-    private void SetupSelectedLocation()
+    private void SetupSelectedLocation(CompositeDisposable d)
     {
         var selectedPlaceChanged =
             this.WhenAnyValue(x => x.SelectedPlace)
@@ -71,7 +70,8 @@ public class AppViewModel : ReactiveObject
                 SelectedLocationLatitude = x.Latitude.ToString(CultureInfo.CurrentCulture);
                 SelectedLocationLongitude = x.Longitude.ToString(CultureInfo.CurrentCulture);
                 SelectedLocationCountry = x.Country;
-            });
+            })
+            .DisposeWith(d);
 
         selectedPlaceChanged
             .Subscribe(x =>
@@ -81,31 +81,34 @@ public class AppViewModel : ReactiveObject
             });
     }
 
-    private void SetupCommands()
+    private void SetupCommands(CompositeDisposable d)
     {
         CityNameSearch = ReactiveCommand.Create(() =>
         {
             LocationSearchText = string.Empty;
             SearchType = LocationSearchType.CityName;
             WaterMarkText = "Search by City Name";
-        }, Observable.Return(true), RxApp.MainThreadScheduler);
+        }, Observable.Return(true), RxApp.MainThreadScheduler)
+        .DisposeWith(d);
 
         LatitudeAndLongitude = ReactiveCommand.Create(() =>
         {
             LocationSearchText = string.Empty;
             SearchType = LocationSearchType.LatLon;
             WaterMarkText = "Search using latitude,longitude i.e. -41.5,59.2";
-        }, Observable.Return(true), RxApp.MainThreadScheduler);
+        }, Observable.Return(true), RxApp.MainThreadScheduler)
+        .DisposeWith(d);
 
         ZipCodeSearch = ReactiveCommand.Create(() =>
         {
             LocationSearchText = string.Empty;
             SearchType = LocationSearchType.ZipCode;
             WaterMarkText = "Search for location by Zip Code";
-        }, Observable.Return(true), RxApp.MainThreadScheduler);
+        }, Observable.Return(true), RxApp.MainThreadScheduler)
+        .DisposeWith(d);
     }
 
-    private void SetupTextSearch()
+    private void SetupTextSearch(CompositeDisposable d)
     {
         SearchResults
             .ObserveCollectionChanges()
@@ -148,7 +151,8 @@ public class AppViewModel : ReactiveObject
                 if (!x.NewSearch.StartsWith(x.PreviousSearch))
                     SearchResults.Clear();
             })
-            .Subscribe();
+            .Subscribe()
+            .DisposeWith(d);
 
         //We validate the search text before searching
         //for each valid search text in the observable stream, we search, should be one
@@ -160,7 +164,7 @@ public class AppViewModel : ReactiveObject
         //this is bad behavior without logging but logging will come later
         searchText
             .Where(searchTerm => ValidateSearch(SearchType, searchTerm))
-            .SelectMany(location => Observable.FromAsync(() => TrySearch(SearchType, location)).Retry(3))
+            .SelectMany(search => Observable.FromAsync(() => TrySearch(SearchType, search)))
             .Catch<IEnumerable<Place>, Exception>(e =>
             {
                 //TODO - Log the Exception e here
@@ -170,7 +174,8 @@ public class AppViewModel : ReactiveObject
             .Where(x => x.Any())
             .ObserveOnDispatcher()
             .Do(places => { SearchResults.AddRange(places); })
-            .Subscribe();
+            .Subscribe()
+            .DisposeWith(d);
     }
 
     private async Task<IEnumerable<Place>> TrySearch(LocationSearchType searchType, string text)

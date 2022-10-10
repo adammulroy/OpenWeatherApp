@@ -41,8 +41,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBox x:Name="SearchTextBox"
-                                 mah:TextBoxHelper.Watermark="{Binding WaterMarkText}" />
+                        <TextBox x:Name="SearchTextBox" />
                     </Grid>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0, 10">

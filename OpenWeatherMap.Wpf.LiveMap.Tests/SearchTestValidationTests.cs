@@ -29,10 +29,8 @@ public class Tests
     {
         var mockLocation = new Mock<ILocationProvider>().Object;
         var mockLocationApi = new Mock<ILocationApiService>().Object;
-        var mockWeather = new Mock<IWeatherProvider>().Object;
-        var mockWeatherApi = new Mock<IWeatherApiService>().Object;
 
-        var appVm = new AppViewModel(mockLocation, mockLocationApi, mockWeather, mockWeatherApi);
+        var appVm = new AppViewModel(mockLocation, mockLocationApi);
         var validated = appVm.ValidateTextForCityName(input);
 
         validated.Should().Be(expected);
@@ -54,10 +52,8 @@ public class Tests
     {
         var mockLocation = new Mock<ILocationProvider>().Object;
         var mockLocationApi = new Mock<ILocationApiService>().Object;
-        var mockWeather = new Mock<IWeatherProvider>().Object;
-        var mockWeatherApi = new Mock<IWeatherApiService>().Object;
 
-        var appVm = new AppViewModel(mockLocation, mockLocationApi, mockWeather, mockWeatherApi);
+        var appVm = new AppViewModel(mockLocation, mockLocationApi);
         var validated = appVm.ValidateTextForUsZipCode(input);
 
         validated.Should().Be(expected);
@@ -79,10 +75,8 @@ public class Tests
     {
         var mockLocation = new Mock<ILocationProvider>().Object;
         var mockLocationApi = new Mock<ILocationApiService>().Object;
-        var mockWeather = new Mock<IWeatherProvider>().Object;
-        var mockWeatherApi = new Mock<IWeatherApiService>().Object;
 
-        var appVm = new AppViewModel(mockLocation, mockLocationApi, mockWeather, mockWeatherApi);
+        var appVm = new AppViewModel(mockLocation, mockLocationApi);
         var validated = appVm.ValidateTextForLatLon(input);
 
         validated.Should().Be(expected);

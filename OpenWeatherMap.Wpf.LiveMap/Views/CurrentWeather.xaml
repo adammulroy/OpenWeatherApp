@@ -39,8 +39,8 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Weather Conditions">
-                <ListBox x:Name="WeatherConditions">
-                    <ListBox.ItemTemplate>
+                <ItemsControl x:Name="WeatherConditions" >
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type currentWeather:WeatherCondition}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0, 5">
@@ -53,8 +53,8 @@
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </GroupBox>
             <GroupBox Header="Visibility">
                 <StackPanel>

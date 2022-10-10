@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Reactive.Disposables;
 using DynamicData;
 using OpenWeatherApp.Api.OpenWeather.Models.CurrentWeather;
 using OpenWeatherApp.Weather;
@@ -9,7 +10,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace OpenWeatherMap.Wpf.LiveMap.ViewModels;
 
-public class CurrentWeatherViewModel : ReactiveObject
+public class CurrentWeatherViewModel : ReactiveObject, IActivatableViewModel
 {
     private readonly IWeatherProvider _weatherProvider;
 
@@ -19,9 +20,12 @@ public class CurrentWeatherViewModel : ReactiveObject
         Activator = new ViewModelActivator();
         WeatherConditions = new ObservableCollection<WeatherCondition>();
 
-
-        _weatherProvider.CurrentWeatherUpdate
-            .Subscribe(UpdateWeatherFromCurrentWeather);
+        this.WhenActivated(disp =>
+        {
+            _weatherProvider.CurrentWeatherUpdate
+                .Subscribe(UpdateWeatherFromCurrentWeather)
+                .DisposeWith(disp);
+        });
     }
 
     public ObservableCollection<WeatherCondition> WeatherConditions { get; }
@@ -60,7 +64,7 @@ public class CurrentWeatherViewModel : ReactiveObject
         VisibilityInMeters = $"{weather.Visibility} Meters";
         CurrentTemperature = weather.Temperature.CurrentTemperature.ToString(culture) + "°F";
         FeelsLike = weather.Temperature.FeelsLike.ToString(culture) + "°F";
-        Humidity = weather.Temperature.Humidity.ToString(culture);
+        Humidity = weather.Temperature.Humidity.ToString(culture) + "%";
         MinimumTemperature = weather.Temperature.MinimumTemperature.ToString(culture) + "°F";
         MaximumTemperature = weather.Temperature.MaximumTemperature.ToString(culture) + "°F";
         WindSpeed = weather.Wind.Speed.ToString(culture) + "MPH";

@@ -1,8 +1,10 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 using OpenWeatherApp.Location;
 using OpenWeatherMap.Wpf.LiveMap.ViewModels;
+using System;
 using ReactiveUI;
 
 namespace OpenWeatherMap.Wpf.LiveMap.Views;
@@ -97,6 +99,13 @@ public partial class MainWindow : IViewFor<AppViewModel>
                     viewModel => viewModel.SearchType,
                     view => view.LatLonButton.Foreground,
                     x => x == LocationSearchType.LatLon ? Brushes.Green : Brushes.White)
+                .DisposeWith(disp);
+
+            this.WhenAnyValue(v => v.ViewModel.WaterMarkText)
+                .Subscribe(waterMarkText =>
+                {
+                    SearchTextBox.SetValue(TextBoxHelper.WatermarkProperty, waterMarkText);
+                })
                 .DisposeWith(disp);
         });
     }
