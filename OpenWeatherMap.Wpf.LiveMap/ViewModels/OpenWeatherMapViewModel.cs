@@ -78,7 +78,8 @@ public class AppViewModel : ReactiveObject, IActivatableViewModel
             {
                 SearchResults.Clear();
                 _locationProvider.SetSelectedPlace(x);
-            });
+            })
+            .DisposeWith(d);;
     }
 
     private void SetupCommands(CompositeDisposable d)
@@ -119,7 +120,8 @@ public class AppViewModel : ReactiveObject, IActivatableViewModel
                     HasSearchResults = true;
                 else
                     HasSearchResults = false;
-            });
+            })
+            .DisposeWith(d);;
 
         //Here we listen for changes to the search text box
         //we only accept new inputs every 500ms
