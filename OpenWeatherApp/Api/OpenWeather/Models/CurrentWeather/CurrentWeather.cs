@@ -7,14 +7,13 @@ namespace OpenWeatherApp.Api.OpenWeather.Models.CurrentWeather
 {
     public class CurrentWeather
     {
+
         [JsonPropertyName("coord")] public Coordinates Coordinates { get; set; }
 
         [JsonPropertyName("weather")] public IList<WeatherCondition> WeatherConditions { get; set; }
 
-        [JsonPropertyName("main")] public WeatherDetail Weather { get; set; }
-
         //REF - Visibility in meters
-        [JsonPropertyName("visibility")] public string Visibility { get; set; }
+        [JsonPropertyName("visibility")] public int Visibility { get; set; }
 
         [JsonPropertyName("main")] public Temperature Temperature { get; set; }
 
@@ -27,20 +26,5 @@ namespace OpenWeatherApp.Api.OpenWeather.Models.CurrentWeather
         [JsonPropertyName("dt")]
         [JsonConverter(typeof(UnixToNullableUtcDateTimeConverter))]
         public DateTime? TimeOfDataCollectionUtc { get; set; }
-
-        [JsonPropertyName("name")] public string Name { get; set; }
-
-        [JsonPropertyName("cod")] public int Code { get; set; }
-    }
-
-    public class Sun
-    {
-        [JsonPropertyName("sunrise")]
-        [JsonConverter(typeof(UnixToNullableUtcDateTimeConverter))]
-        public DateTime? SunriseTimeUtc { get; set; }
-
-        [JsonPropertyName("sunset")]
-        [JsonConverter(typeof(UnixToNullableUtcDateTimeConverter))]
-        public DateTime? SunsetTimeUtc { get; set; }
     }
 }

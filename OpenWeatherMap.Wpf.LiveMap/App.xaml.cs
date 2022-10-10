@@ -36,6 +36,7 @@ namespace OpenWeatherMap.Wpf.LiveMap
             services.AddScoped<IWeatherProvider, WeatherProvider>();
             services.AddScoped<ILocationApiService, OpenWeatherLocationApiService>();
             services.AddScoped<ILocationProvider, LocationProvider>();
+            services.AddSingleton<CurrentWeatherViewModel>();
             services.AddSingleton<AppViewModel>();
             services.AddSingleton<MainWindow>();
         }

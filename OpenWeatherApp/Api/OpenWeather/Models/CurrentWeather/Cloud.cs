@@ -6,6 +6,6 @@ namespace OpenWeatherApp.Api.OpenWeather.Models.CurrentWeather
     {
         [JsonPropertyName("Name")] public string Description { get; set; }
 
-        [JsonPropertyName("description")] public string Cloudiness { get; set; }
+        [JsonPropertyName("description")] public int Cloudiness { get; set; }
     }
 }

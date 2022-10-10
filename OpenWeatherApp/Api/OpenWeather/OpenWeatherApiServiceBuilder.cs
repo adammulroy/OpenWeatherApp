@@ -22,11 +22,12 @@ namespace OpenWeatherApp.Api.OpenWeather
 
             services.AddRefitClient<IOpenWeatherWeatherApi>()
                 .ConfigureHttpClient(client => { client.BaseAddress = new Uri(settings.OpenWeatherMapWeatherApiUrl); })
-                .ConfigureHttpMessageHandlerBuilder(_ =>
+                .ConfigurePrimaryHttpMessageHandler(_ =>
                 {
                     var handler = new QueryStringInjectorHttpMessageHandler();
                     handler.Parameters.Add("units", "imperial");
                     handler.Parameters.Add("APPID", settings.OpenWeatherMapApiKey);
+                    return handler;
                 });
 
             return services;

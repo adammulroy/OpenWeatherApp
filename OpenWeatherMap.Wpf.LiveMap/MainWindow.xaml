@@ -20,8 +20,12 @@
         <Border BorderThickness="0">
             <hwndHost:ChromiumWebBrowser x:Name="Browser" />
         </Border>
-        <StackPanel Grid.Column="1">
-           <GroupBox Header="Location" Margin="0, 20">
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Location" Margin="0, 20">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="ZipCodeButton" Content="Zip Code"/>
@@ -41,31 +45,27 @@
                     </Grid>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0, 10">
-                            <TextBlock Margin="10, 0" Text="Location Name:"/>
+                            <TextBlock Margin="5, 0" Text="Location Name:"/>
                             <TextBlock x:Name="SelectedLocationName"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0, 10">
-                            <TextBlock Margin="10, 0" Text="Latitude:"/>
+                            <TextBlock Margin="5, 0" Text="Latitude:"/>
                             <TextBlock x:Name="SelectedLocationLatitude"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0, 10">
-                            <TextBlock Margin="10, 0" Text="Longitude:"/>
+                            <TextBlock Margin="5, 0" Text="Longitude:"/>
                             <TextBlock x:Name="SelectedLocationLongitude"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0, 10">
-                            <TextBlock Margin="10, 0" Text="Country:"/>
+                            <TextBlock Margin="5, 0" Text="Country:"/>
                             <TextBlock x:Name="SelectedLocationCountry"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
            </GroupBox>
-            <GroupBox Header="Weather">
-                <StackPanel>
-                    <GroupBox Header="Temperature">
-                    
-                    </GroupBox>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+            <GroupBox Grid.Row="1" Header="Current Weather Forecast">
+                <liveMap:CurrentWeatherView x:Name="WeatherView"/>
+            </GroupBox >
+        </Grid>
     </Grid>
 </mah:MetroWindow>

@@ -157,7 +157,7 @@ public class AppViewModel : ReactiveObject
         //this is bad behavior without logging but logging will come later
         searchText
             .Where(searchTerm => ValidateSearch(SearchType, searchTerm))
-            .SelectMany(async x => await TrySearch(SearchType, x))
+            .SelectMany(location => Observable.FromAsync(() => TrySearch(SearchType, location)).Retry(3))
             .Catch<IEnumerable<Place>, Exception>( e =>
             {
                 //TODO - Log the Exception e here

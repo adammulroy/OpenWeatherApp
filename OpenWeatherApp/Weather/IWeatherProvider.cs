@@ -1,6 +1,10 @@
-﻿namespace OpenWeatherApp.Weather
+﻿using System;
+using OpenWeatherApp.Api.OpenWeather.Models.CurrentWeather;
+
+namespace OpenWeatherApp.Weather
 {
-    public class IWeatherProvider
+    public interface IWeatherProvider
     {
+        IObservable<CurrentWeather> CurrentWeatherUpdate { get; }
     }
 }
