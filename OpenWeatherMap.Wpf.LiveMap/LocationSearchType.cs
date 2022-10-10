@@ -1,4 +1,4 @@
-﻿namespace OpenWeatherApp.Location;
+﻿namespace OpenWeatherMap.Wpf.LiveMap;
 
 public enum LocationSearchType
 {

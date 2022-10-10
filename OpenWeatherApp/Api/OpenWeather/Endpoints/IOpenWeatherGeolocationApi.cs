@@ -8,7 +8,6 @@ namespace OpenWeatherApp.Api.OpenWeather.Endpoints
 {
     public interface IOpenWeatherGeolocationApi
     {
-
         //http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
         [Get("/zip?zip={zipCode}," + "US")]
         Task<ApiResponse<ZipCodeLocation>> GetLocationByZipCode(string zipCode,

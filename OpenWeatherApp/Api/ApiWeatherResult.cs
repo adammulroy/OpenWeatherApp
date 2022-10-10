@@ -5,11 +5,12 @@ namespace OpenWeatherApp.Api
 {
     public class ApiWeatherResult : ApiResult
     {
-        public CurrentWeather Weather { get; }
-
-        public ApiWeatherResult(CurrentWeather weather, HttpStatusCode statusCode, string? httpMessage) : base(statusCode, httpMessage)
+        public ApiWeatherResult(CurrentWeather weather, HttpStatusCode statusCode, string? httpMessage) : base(
+            statusCode, httpMessage)
         {
             Weather = weather;
         }
+
+        public CurrentWeather Weather { get; }
     }
 }

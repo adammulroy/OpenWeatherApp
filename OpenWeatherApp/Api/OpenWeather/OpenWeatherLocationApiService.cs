@@ -26,13 +26,13 @@ namespace OpenWeatherApp.Api.OpenWeather
             if (result.IsSuccessStatusCode &&
                 result.Content != null)
             {
-                var places= result.Content.Select(location => location.ToPlace()).ToList();
+                var places = result.Content.Select(location => location.ToPlace()).ToList();
                 return new ApiPlaceResult(places, result.StatusCode, result.ReasonPhrase);
             }
 
             return new ApiPlaceResult(new List<Place>(), result.StatusCode, result.ReasonPhrase);
         }
-        
+
         public async Task<ApiPlaceResult> GetPlaceForCityName(string cityName)
         {
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(ApiTimeoutSeconds));
@@ -40,13 +40,13 @@ namespace OpenWeatherApp.Api.OpenWeather
             if (result.IsSuccessStatusCode &&
                 result.Content != null)
             {
-                var places= result.Content.Select(cityNameLocation => cityNameLocation.ToPlace()).ToList();
+                var places = result.Content.Select(cityNameLocation => cityNameLocation.ToPlace()).ToList();
                 return new ApiPlaceResult(places, result.StatusCode, result.ReasonPhrase);
             }
 
             return new ApiPlaceResult(new List<Place>(), result.StatusCode, result.ReasonPhrase);
         }
-        
+
         public async Task<ApiPlaceResult> GetPlaceForZipCode(string zipCode)
         {
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(ApiTimeoutSeconds));

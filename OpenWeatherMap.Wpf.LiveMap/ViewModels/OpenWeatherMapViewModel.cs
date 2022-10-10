@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using DynamicData;
@@ -16,30 +15,17 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using static System.Collections.Specialized.NotifyCollectionChangedAction;
 
-namespace OpenWeatherMap.Wpf.LiveMap;
+namespace OpenWeatherMap.Wpf.LiveMap.ViewModels;
 
 public class AppViewModel : ReactiveObject
 {
-    private readonly ILocationProvider _locationProvider;
     private readonly ILocationApiService _apiService;
-    private readonly IWeatherProvider _weatherProvider;
+    private readonly ILocationProvider _locationProvider;
     private readonly IWeatherApiService _weatherApiService;
+    private readonly IWeatherProvider _weatherProvider;
 
-    public ObservableCollection<Place> SearchResults { get; }
-    [Reactive] public string LocationSearchText { get; set; }
-    [Reactive] public Place SelectedPlace { get; set; }
-    [Reactive] public bool HasSearchResults { get; set; }
-    [Reactive] public string WaterMarkText { get; set; }
-    [Reactive] public string SelectedLocationName { get; set; }
-    [Reactive] public string SelectedLocationLatitude { get; set; }
-    [Reactive] public string SelectedLocationLongitude { get; set; }
-    [Reactive] public string SelectedLocationCountry { get; set; }
-    public ReactiveCommand<Unit, Unit> ZipCodeSearch { get; private set; }
-    public ReactiveCommand<Unit, Unit> CityNameSearch { get; private set; }
-    public ReactiveCommand<Unit, Unit> LatitudeAndLongitude { get; private set; }
-    [Reactive] public LocationSearchType SearchType { get; set; }
-
-    public AppViewModel(ILocationProvider locationProvider, ILocationApiService apiService, IWeatherProvider weatherProvider, IWeatherApiService weatherApiService)
+    public AppViewModel(ILocationProvider locationProvider, ILocationApiService apiService,
+        IWeatherProvider weatherProvider, IWeatherApiService weatherApiService)
     {
         _locationProvider = locationProvider;
         _apiService = apiService;
@@ -55,12 +41,28 @@ public class AppViewModel : ReactiveObject
         SetupTextSearch();
     }
 
+    public ObservableCollection<Place> SearchResults { get; }
+    [Reactive] public string LocationSearchText { get; set; }
+    [Reactive] public Place SelectedPlace { get; set; }
+    [Reactive] public bool HasSearchResults { get; set; }
+    [Reactive] public string WaterMarkText { get; set; }
+    [Reactive] public string SelectedLocationName { get; set; }
+    [Reactive] public string SelectedLocationLatitude { get; set; }
+    [Reactive] public string SelectedLocationLongitude { get; set; }
+    [Reactive] public string SelectedLocationCountry { get; set; }
+    public ReactiveCommand<Unit, Unit> ZipCodeSearch { get; private set; }
+    public ReactiveCommand<Unit, Unit> CityNameSearch { get; private set; }
+    public ReactiveCommand<Unit, Unit> LatitudeAndLongitude { get; private set; }
+    [Reactive] public LocationSearchType SearchType { get; set; }
+
+    public ViewModelActivator Activator { get; }
+
     private void SetupSelectedLocation()
     {
         var selectedPlaceChanged =
             this.WhenAnyValue(x => x.SelectedPlace)
                 .Where(x => x != null);
-        
+
         selectedPlaceChanged
             .ObserveOnDispatcher()
             .Subscribe(x =>
@@ -70,8 +72,8 @@ public class AppViewModel : ReactiveObject
                 SelectedLocationLongitude = x.Longitude.ToString(CultureInfo.CurrentCulture);
                 SelectedLocationCountry = x.Country;
             });
-        
-        selectedPlaceChanged    
+
+        selectedPlaceChanged
             .Subscribe(x =>
             {
                 SearchResults.Clear();
@@ -87,14 +89,14 @@ public class AppViewModel : ReactiveObject
             SearchType = LocationSearchType.CityName;
             WaterMarkText = "Search by City Name";
         }, Observable.Return(true), RxApp.MainThreadScheduler);
-        
+
         LatitudeAndLongitude = ReactiveCommand.Create(() =>
         {
             LocationSearchText = string.Empty;
             SearchType = LocationSearchType.LatLon;
             WaterMarkText = "Search using latitude,longitude i.e. -41.5,59.2";
         }, Observable.Return(true), RxApp.MainThreadScheduler);
-        
+
         ZipCodeSearch = ReactiveCommand.Create(() =>
         {
             LocationSearchText = string.Empty;
@@ -133,20 +135,21 @@ public class AppViewModel : ReactiveObject
             searchText.StartWith(string.Empty);
 
         //skip one emittance of the stream
-        var newSearchText = 
+        var newSearchText =
             previousSearch.Skip(1);
 
         //Clear search results if our new search is different
         //simple startswith check for now
         newSearchText
-            .Zip(previousSearch, (l, p) => new { NewSearch = l, PreviousSearch = p})
+            .Zip(previousSearch, (l, p) => new { NewSearch = l, PreviousSearch = p })
             .ObserveOnDispatcher()
             .Do(x =>
-            { if (!x.NewSearch.StartsWith(x.PreviousSearch))
+            {
+                if (!x.NewSearch.StartsWith(x.PreviousSearch))
                     SearchResults.Clear();
             })
             .Subscribe();
-        
+
         //We validate the search text before searching
         //for each valid search text in the observable stream, we search, should be one
         //we merge the IEnumerable<Place> from API with our cached IEnumerable<Place>
@@ -158,7 +161,7 @@ public class AppViewModel : ReactiveObject
         searchText
             .Where(searchTerm => ValidateSearch(SearchType, searchTerm))
             .SelectMany(location => Observable.FromAsync(() => TrySearch(SearchType, location)).Retry(3))
-            .Catch<IEnumerable<Place>, Exception>( e =>
+            .Catch<IEnumerable<Place>, Exception>(e =>
             {
                 //TODO - Log the Exception e here
 
@@ -166,10 +169,7 @@ public class AppViewModel : ReactiveObject
             })
             .Where(x => x.Any())
             .ObserveOnDispatcher()
-            .Do(places =>
-            {
-                SearchResults.AddRange(places);
-            })
+            .Do(places => { SearchResults.AddRange(places); })
             .Subscribe();
     }
 
@@ -186,14 +186,14 @@ public class AppViewModel : ReactiveObject
                 return cities?.Places ?? emptyPlaces;
             case LocationSearchType.LatLon:
                 var latLon = GetLatLonFromText(text);
-                
+
                 if (double.IsNaN(latLon.lat) ||
                     double.IsNaN(latLon.lon))
                     return emptyPlaces;
-                
+
                 var res = await _apiService.GetPlaceForLatLon(latLon.lat.ToString(), latLon.lon.ToString());
                 return res?.Places ?? emptyPlaces;
-            
+
             default:
                 return emptyPlaces;
         }
@@ -257,7 +257,7 @@ public class AppViewModel : ReactiveObject
         if (double.IsNaN(res.lat) ||
             double.IsNaN(res.lon))
             return false;
-        
+
         return true;
     }
 
@@ -268,16 +268,16 @@ public class AppViewModel : ReactiveObject
         if (string.IsNullOrEmpty(text) ||
             !text.Contains(','))
             return nanLatLon;
-        
+
         var latLon = text.Split(',');
         var lat = latLon[0];
         var lon = latLon[1];
 
         var parsedLat = double.TryParse(lat, out var dblLat);
         var parsedLon = double.TryParse(lon, out var dblLon);
-        
-        if(!parsedLat ||
-           dblLat is < -90 or > 90)
+
+        if (!parsedLat ||
+            dblLat is < -90 or > 90)
             return nanLatLon;
 
         if (!parsedLon ||
@@ -286,6 +286,4 @@ public class AppViewModel : ReactiveObject
 
         return (dblLat, dblLon);
     }
-
-    public ViewModelActivator Activator { get; }
 }

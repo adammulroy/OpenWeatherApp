@@ -3,13 +3,13 @@ using System.Windows.Threading;
 using OpenWeatherApp.Api;
 using OpenWeatherApp.Location;
 using OpenWeatherApp.Weather;
+using OpenWeatherMap.Wpf.LiveMap.ViewModels;
 using ReactiveUI;
 
 namespace OpenWeatherMap.Wpf.LiveMap.Tests;
 
 public class Tests
 {
-   
     [SetUp]
     public void Setup()
     {
@@ -31,13 +31,13 @@ public class Tests
         var mockLocationApi = new Mock<ILocationApiService>().Object;
         var mockWeather = new Mock<IWeatherProvider>().Object;
         var mockWeatherApi = new Mock<IWeatherApiService>().Object;
-        
+
         var appVm = new AppViewModel(mockLocation, mockLocationApi, mockWeather, mockWeatherApi);
         var validated = appVm.ValidateTextForCityName(input);
 
         validated.Should().Be(expected);
     }
-    
+
     [TestCase("$$$$$$", false)]
     [TestCase("$%", false)]
     [TestCase("!4567", false)]
@@ -56,13 +56,13 @@ public class Tests
         var mockLocationApi = new Mock<ILocationApiService>().Object;
         var mockWeather = new Mock<IWeatherProvider>().Object;
         var mockWeatherApi = new Mock<IWeatherApiService>().Object;
-        
+
         var appVm = new AppViewModel(mockLocation, mockLocationApi, mockWeather, mockWeatherApi);
         var validated = appVm.ValidateTextForUsZipCode(input);
 
         validated.Should().Be(expected);
     }
-    
+
     [TestCase("44.56", false)]
     [TestCase("$%", false)]
     [TestCase("!4567", false)]
@@ -81,7 +81,7 @@ public class Tests
         var mockLocationApi = new Mock<ILocationApiService>().Object;
         var mockWeather = new Mock<IWeatherProvider>().Object;
         var mockWeatherApi = new Mock<IWeatherApiService>().Object;
-        
+
         var appVm = new AppViewModel(mockLocation, mockLocationApi, mockWeather, mockWeatherApi);
         var validated = appVm.ValidateTextForLatLon(input);
 

@@ -1,8 +1,8 @@
 ﻿using System.Reactive.Disposables;
-using System.Windows.Controls;
+using OpenWeatherMap.Wpf.LiveMap.ViewModels;
 using ReactiveUI;
 
-namespace OpenWeatherMap.Wpf.LiveMap;
+namespace OpenWeatherMap.Wpf.LiveMap.Views;
 
 public partial class CurrentWeatherView : IViewFor<CurrentWeatherViewModel>
 {
@@ -71,17 +71,17 @@ public partial class CurrentWeatherView : IViewFor<CurrentWeatherViewModel>
                     viewModel => viewModel.WindDirection,
                     view => view.WindDirection.Text)
                 .DisposeWith(disp);
-            
+
             this.OneWayBind(ViewModel,
                     viewModel => viewModel.WindGustMph,
                     view => view.WindGusts.Text)
                 .DisposeWith(disp);
-            
+
             this.OneWayBind(ViewModel,
                     viewModel => viewModel.SunriseTime,
                     view => view.Sunrise.Text)
                 .DisposeWith(disp);
-            
+
             this.OneWayBind(ViewModel,
                     viewModel => viewModel.SunsetTime,
                     view => view.Sunset.Text)
@@ -92,7 +92,7 @@ public partial class CurrentWeatherView : IViewFor<CurrentWeatherViewModel>
     object IViewFor.ViewModel
     {
         get => ViewModel;
-        set => ViewModel = (CurrentWeatherViewModel) value;
+        set => ViewModel = (CurrentWeatherViewModel)value;
     }
 
     public CurrentWeatherViewModel ViewModel { get; set; }

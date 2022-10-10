@@ -7,7 +7,6 @@ namespace OpenWeatherApp.Api.OpenWeather.Models.CurrentWeather
 {
     public class CurrentWeather
     {
-
         [JsonPropertyName("coord")] public Coordinates Coordinates { get; set; }
 
         [JsonPropertyName("weather")] public IList<WeatherCondition> WeatherConditions { get; set; }

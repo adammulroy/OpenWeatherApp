@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
 
-namespace OpenWeatherMap.Wpf.LiveMap;
+namespace OpenWeatherMap.Wpf.LiveMap.Behaviors;
 
 public class ScrollMouseWheelBehavior : Behavior<UIElement>
 {
@@ -18,7 +18,7 @@ public class ScrollMouseWheelBehavior : Behavior<UIElement>
         base.OnDetaching();
     }
 
-    void AssociatedObject_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    private void AssociatedObject_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
         e.Handled = true;
         var e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
