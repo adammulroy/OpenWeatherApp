@@ -19,7 +19,7 @@ public class CefSharpBrowserAdapter
         _chromiumWebBrowser = chromiumWebBrowser;
         _locationProvider = locationProvider;
 
-        _locationProvider.SelectedPlace.Subscribe(x =>
+        _locationProvider.SelectedPlaceUpdate.Subscribe(x =>
         {
             _chromiumWebBrowser.Address = $"{WeatherMapBaseUrl}lat={x.Latitude}&lon={x.Longitude}&zoom=10";
         });

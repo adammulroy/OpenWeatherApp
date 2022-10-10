@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using DynamicData;
 
 namespace OpenWeatherApp.Location
 {
     public interface ILocationProvider
     {
-        IEnumerable<Place> CachedLocations { get; }
-        IObservable<Place> SelectedPlace { get; }
+        ISourceCache<Place, string> CachedLocations { get; }
+        IObservable<Place> SelectedPlaceUpdate { get; }
 
         void SetSelectedPlace(Place place);
     }

@@ -1,12 +1,17 @@
-﻿<mah:MetroWindow x:Class="OpenWeatherMap.Wpf.LiveMap.MainWindow"
+<mah:MetroWindow x:Class="OpenWeatherMap.Wpf.LiveMap.MainWindow"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:hwndHost="clr-namespace:CefSharp.Wpf.HwndHost;assembly=CefSharp.Wpf.HwndHost"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:location="clr-namespace:OpenWeatherApp.Location;assembly=OpenWeatherApp"
+                 xmlns:liveMap="clr-namespace:OpenWeatherMap.Wpf.LiveMap"
+                 Height="900"
+                 Width="1600"
                  mc:Ignorable="d"
-                 d:DesignHeight="300" d:DesignWidth="300">
+                 d:DesignHeight="300" d:DesignWidth="300"
+                 d:DataContext="{d:DesignInstance Type=liveMap:AppViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
@@ -17,12 +22,50 @@
         </Border>
         <StackPanel Grid.Column="1">
            <GroupBox Header="Location" Margin="0, 20">
-               <StackPanel>
-                   <TextBox x:Name="SearchTextBox" 
-                            mah:TextBoxHelper.Watermark="Search for location"/>
-                   <ComboBox x:Name="LocationsComboBox"/>
-               </StackPanel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="ZipCodeButton" Content="Zip Code"/>
+                        <Button x:Name="CityNameButton" Content="City Name"/>
+                        <Button x:Name="LatLonButton" Content="Latitude and Longitude"/>
+                    </StackPanel>
+                    <Grid>
+                        <ComboBox x:Name="SearchResultsComboBox">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type location:Place}">
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox x:Name="SearchTextBox" 
+                                 mah:TextBoxHelper.Watermark="{Binding WaterMarkText}"/>
+                    </Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0, 10">
+                            <TextBlock Margin="10, 0" Text="Location Name:"/>
+                            <TextBlock x:Name="SelectedLocationName"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0, 10">
+                            <TextBlock Margin="10, 0" Text="Latitude:"/>
+                            <TextBlock x:Name="SelectedLocationLatitude"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0, 10">
+                            <TextBlock Margin="10, 0" Text="Longitude:"/>
+                            <TextBlock x:Name="SelectedLocationLongitude"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0, 10">
+                            <TextBlock Margin="10, 0" Text="Country:"/>
+                            <TextBlock x:Name="SelectedLocationCountry"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
            </GroupBox>
+            <GroupBox Header="Weather">
+                <StackPanel>
+                    <GroupBox Header="Temperature">
+                    
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>

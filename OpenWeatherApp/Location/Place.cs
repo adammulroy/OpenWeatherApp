@@ -1,10 +1,8 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace OpenWeatherApp.Location
+﻿namespace OpenWeatherApp.Location
 {
     public class Place
     {
-        public Place(string? name, string? latitude, string? longitude, string? country)
+        public Place(string name, double latitude, double longitude, string country)
         {
             DisplayName = name;
             Latitude = latitude;
@@ -12,9 +10,9 @@ namespace OpenWeatherApp.Location
             Country = country;
         }
 
-        public string? DisplayName { get; }
-        public string? Latitude { get; }
-        public string? Longitude { get; }
-        public string? Country { get; }
+        public string DisplayName { get; }
+        public double Latitude { get; }
+        public double Longitude { get; }
+        public string Country { get; }
     }
 }

@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using DynamicData;
 using OpenWeatherApp.Api;
 
 namespace OpenWeatherApp.Location
 {
     public class LocationProvider : ILocationProvider
     {
-        private readonly ILocationApiService _locationApiService;
         private ISubject<Place> _selectedPlace = new Subject<Place>();
-        
-        public IEnumerable<Place> CachedLocations { get; } = new List<Place>();
-        public IObservable<Place> SelectedPlace { get; }
+
+        private readonly SourceCache<Place, string> _cachedLocation = new(x => $"{x.Latitude},{x.Longitude}");
+        public ISourceCache<Place, string> CachedLocations => _cachedLocation;
+        public IObservable<Place> SelectedPlaceUpdate { get; }
 
         public LocationProvider(ILocationApiService locationApiService)
         {
-            SelectedPlace = _selectedPlace.AsObservable();
-            _locationApiService = locationApiService;
+            SelectedPlaceUpdate = _selectedPlace.AsObservable();
         }
 
         public void SetSelectedPlace(Place place)
         {
+            _cachedLocation.AddOrUpdate(place);
             _selectedPlace.OnNext(place);
         }
     }
