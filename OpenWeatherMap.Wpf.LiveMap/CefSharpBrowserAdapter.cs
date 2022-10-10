@@ -1,14 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CefSharp;
 using CefSharp.Wpf.HwndHost;
 using OpenWeatherApp.Location;
-using System;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
-namespace OpenWeatherMap.Wpf.LiveMap.ViewModels;
+namespace OpenWeatherMap.Wpf.LiveMap;
 
-public class BrowserViewModel
+public class CefSharpBrowserAdapter
 {
     private readonly ChromiumWebBrowser _chromiumWebBrowser;
     private readonly ILocationProvider _locationProvider;
@@ -16,20 +14,15 @@ public class BrowserViewModel
     private readonly string WeatherMapBaseUrl =
         "https://openweathermap.org/weathermap?basemap=map&cities=true&layer=precipitation&";
 
-    public BrowserViewModel(ChromiumWebBrowser chromiumWebBrowser, ILocationProvider locationProvider)
+    public CefSharpBrowserAdapter(ChromiumWebBrowser chromiumWebBrowser, ILocationProvider locationProvider)
     {
         _chromiumWebBrowser = chromiumWebBrowser;
         _locationProvider = locationProvider;
 
         _locationProvider.SelectedPlace.Subscribe(x =>
         {
-                
+            _chromiumWebBrowser.Address = $"{WeatherMapBaseUrl}lat={x.Latitude}&lon={x.Longitude}&zoom=10";
         });
-    }
-
-    private void SetBrowserUrl(Place place)
-    {
-        
     }
 
     public void Init()
